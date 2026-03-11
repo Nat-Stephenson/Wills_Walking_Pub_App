@@ -42,17 +42,3 @@ export const DIFFICULTY_COLORS = {
   Moderate: '#f59e0b',  // amber  
   Challenging: '#ef4444' // red
 } as const;
-        description: 'Famous walkers pub',
-        latitude: 53.3650,
-        longitude: -1.8100
-      },
-      {
-        id: 'p5',
-        name: 'The Castle Inn',
-        description: 'Historic inn near the castle',
-        latitude: 53.3400,
-        longitude: -1.7750
-      }
-    ]
-  }
-];
