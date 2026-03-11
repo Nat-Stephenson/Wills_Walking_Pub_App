@@ -37,37 +37,51 @@ src/
 - **Service layer ready** - Database connection points are prepared in `/src/services/`
 - **Types defined** - All TypeScript interfaces are ready for your data structure
 
-### To Connect Your Database
+### Data Layer
+
+The app currently uses static mock data for development and testing. The mock data includes:
+
+- 6 sample walking routes across different UK regions
+- Multiple difficulty levels (Easy, Moderate, Challenging)  
+- Associated pubs for each route
+- Realistic geographical coordinates
+
+**Mock data is located in:**
+- `/src/data/mockData.ts` - Route and pub data with helper functions
+
+### To Connect Your Database (Optional)
+
+If you want to replace the mock data with a real database:
 
 1. **Install your database driver** (examples):
 ```bash
 # For MongoDB with Mongoose
 npm install mongoose
 
-# For PostgreSQL with Prisma
+# For PostgreSQL with Prisma  
 npm install prisma @prisma/client
-
-# For Supabase
-npm install @supabase/supabase-js
 ```
 
-2. **Update the service files** in `/src/services/index.ts`:
+2. **Create a service layer** in `/src/services/`:
 ```typescript
-// Replace the TODO comments with your database calls
-static async getAllRoutes(): Promise<Route[]> {
-  // MongoDB example:
-  return await RouteModel.find({}).populate('pubs');
-  
-  // Prisma example:
-  return await prisma.route.findMany({ include: { pubs: true } });
-  
-  // Supabase example:
-  const { data } = await supabase.from('routes').select('*, pubs(*)');
-  return data || [];
+// Replace the mock data functions with your database calls
+export class RouteService {
+  static async getAllRoutes(): Promise<Route[]> {
+    // MongoDB example:
+    return await RouteModel.find({}).populate('pubs');
+    
+    // Prisma example:
+    return await prisma.route.findMany({ include: { pubs: true } });
+  }
 }
 ```
 
 3. **Environment variables** (create `.env.local`):
+```
+# Database connection
+DATABASE_URL=your_database_connection_string
+# Add other environment variables as needed
+```
 ```
 # Database connection
 DATABASE_URL=your_database_connection_string
