@@ -1,0 +1,163 @@
+.home {
+  margin: 1.5rem 0;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-bottom: 2rem;
+}
+
+.searchContainer {
+  margin-bottom: 1.5rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  position: relative;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #92400e;
+  box-shadow: 0 0 0 2px rgba(146, 64, 14, 0.1);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.filterContainer {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  transition: all 0.2s;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #475569;
+  cursor: pointer;
+}
+
+.filterButton:hover {
+  border-color: #92400e;
+}
+
+.filterButtonActive {
+  background-color: #92400e;
+  color: white;
+  border-color: #92400e;
+}
+
+.routesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.routeCard {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.routeCard:hover {
+  transform: translateY(-2px);
+}
+
+.routeImage {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+}
+
+.routeContent {
+  padding: 1rem;
+}
+
+.routeName {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.routeDescription {
+  color: #64748b;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.routeStats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.routeStat {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Empty state styles */
+.emptyState {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1rem;
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.emptyStateIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.emptyStateTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.75rem;
+}
+
+.emptyStateDescription {
+  color: #64748b;
+  margin-bottom: 2rem;
+  max-width: 400px;
+  line-height: 1.6;
+}

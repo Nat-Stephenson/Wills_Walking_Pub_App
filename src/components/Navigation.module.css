@@ -1,0 +1,32 @@
+/* Navigation Component Styles */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  color: #475569;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navItem:hover {
+  background-color: #f1f5f9;
+}
+
+.navItemActive {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.navIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
