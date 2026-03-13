@@ -1,4 +1,19 @@
+'use client';
+
+import { useState } from 'react';
+import GoogleMap from '@/components/GoogleMap';
+import { routes } from '@/data/mockData';
+
 export default function MapView() {
+  const [showAllRoutes, setShowAllRoutes] = useState(false);
+
+  // For development, use a placeholder key - you'll need to replace this
+  const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
+
+  const completedRoutes = routes.filter(route => route.isCompleted);
+  const totalDistance = routes.reduce((sum, route) => sum + route.distance, 0);
+  const totalPubs = routes.reduce((sum, route) => sum + route.pubs.length, 0);
+
   return (
     <div className="container">
       <div style={{ marginBottom: '2rem' }}>
@@ -14,6 +29,8 @@ export default function MapView() {
         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
           <input
             type="checkbox"
+            checked={showAllRoutes}
+            onChange={(e) => setShowAllRoutes(e.target.checked)}
             style={{ 
               width: '1rem', 
               height: '1rem',
@@ -26,74 +43,17 @@ export default function MapView() {
         </label>
       </div>
 
-      {/* Static Map Placeholder */}
+      {/* Google Map */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div style={{
           height: '70vh',
           minHeight: '500px',
-          background: 'linear-gradient(135deg, #f1f5f9, #e2e8f0)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
           position: 'relative'
         }}>
-          {/* Grid pattern */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            opacity: 0.1,
-            backgroundImage: `url("data:image/svg+xml,%3csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M40 0L0 0 0 40' fill='none' stroke='%23000' stroke-width='1'/%3e%3c/svg%3e")`,
-            backgroundRepeat: 'repeat'
-          }} />
-          
-          <div style={{ textAlign: 'center', zIndex: 10 }}>
-            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🗺️</div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#475569' }}>
-              UK Walking Routes Map
-            </h3>
-            <p style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.5rem' }}>
-              Interactive map visualization
-            </p>
-            <p style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-              3 routes plotted across the UK
-            </p>
-          </div>
-          
-          {/* Mock route markers */}
-          <div style={{
-            position: 'absolute',
-            top: '30%',
-            left: '40%',
-            width: '12px',
-            height: '12px',
-            backgroundColor: '#92400e',
-            borderRadius: '50%',
-            border: '2px solid white',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-          }} />
-          <div style={{
-            position: 'absolute',
-            top: '45%',
-            left: '35%',
-            width: '12px',
-            height: '12px',
-            backgroundColor: '#92400e',
-            borderRadius: '50%',
-            border: '2px solid white',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-          }} />
-          <div style={{
-            position: 'absolute',
-            top: '25%',
-            left: '45%',
-            width: '12px',
-            height: '12px',
-            backgroundColor: '#16a34a',
-            borderRadius: '50%',
-            border: '2px solid white',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-          }} />
+          <GoogleMap 
+            apiKey={GOOGLE_MAPS_API_KEY} 
+            showAllRoutes={showAllRoutes}
+          />
         </div>
       </div>
 
@@ -114,16 +74,16 @@ export default function MapView() {
           color: '#475569'
         }}>
           <div>
-            <strong>Total distance covered:</strong> 14.7 km
+            <strong>Total routes:</strong> {showAllRoutes ? routes.length : completedRoutes.length}
           </div>
           <div>
-            <strong>Average difficulty:</strong> Moderate
+            <strong>Total distance:</strong> {totalDistance.toFixed(1)} km
           </div>
           <div>
-            <strong>Regions explored:</strong> 3
+            <strong>Completed routes:</strong> {completedRoutes.length}
           </div>
           <div>
-            <strong>Pubs discovered:</strong> 5
+            <strong>Pubs discovered:</strong> {totalPubs}
           </div>
         </div>
       </div>
