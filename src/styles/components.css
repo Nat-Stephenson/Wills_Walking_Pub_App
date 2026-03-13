@@ -1,4 +1,12 @@
 /* Reusable Component Styles */
+
+/* Map page responsive split view */
+.split-view {
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 .btn-primary {
   background-color: #92400e;
   color: white;
