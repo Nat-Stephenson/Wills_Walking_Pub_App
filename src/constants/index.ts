@@ -2,12 +2,18 @@
 
 import type { Route, NavItem } from '@/types';
 
+// Import images
+import TreeIcon from '@/assets/Tree.png';
+import PintBeerIcon from '@/assets/PintBeer.png';
+import TrekIcon from '@/assets/Trek.png';
+import MapIcon from '@/assets/Map.png';
+
 // Navigation items
 export const NAV_ITEMS: NavItem[] = [
-  { path: '/', label: 'Routes', icon: '🌲' },
-  { path: '/create', label: 'Create', icon: '🍺' },
-  { path: '/my-walks', label: 'My Walks', icon: '👢' },
-  { path: '/map', label: 'Map', icon: '🗺️' },
+  { path: '/', label: 'Routes', icon: TreeIcon },
+  { path: '/create', label: 'Create', icon: PintBeerIcon },
+  { path: '/my-walks', label: 'My Walks', icon: TrekIcon },
+  { path: '/map', label: 'Map', icon: MapIcon },
 ];
 
 // Difficulty levels and their properties

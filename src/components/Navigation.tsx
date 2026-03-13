@@ -2,14 +2,21 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { NavItem } from '@/types';
 import styles from './Navigation.module.css';
 
-const navItems: NavItem[] = [
-  { path: '/', label: 'Routes', icon: '🌲' },
-  { path: '/create', label: 'Create', icon: '🍺' },
-  { path: '/my-walks', label: 'My Walks', icon: '👢' },
-  { path: '/map', label: 'Map', icon: '🗺️' },
+// Import images
+import TreeIcon from '@/assets/Tree.png';
+import PintBeerIcon from '@/assets/PintBeer.png';
+import TrekIcon from '@/assets/Trek.png';
+import MapIcon from '@/assets/Map.png';
+
+const navItems = [
+  { path: '/', label: 'Routes', icon: TreeIcon },
+  { path: '/create', label: 'Create', icon: PintBeerIcon },
+  { path: '/my-walks', label: 'My Walks', icon: TrekIcon },
+  { path: '/map', label: 'Map', icon: MapIcon },
 ];
 
 export default function Navigation() {
@@ -25,7 +32,13 @@ export default function Navigation() {
             href={item.path}
             className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
           >
-            <span className={styles.navIcon}>{item.icon}</span>
+            <Image
+              src={item.icon}
+              alt={`${item.label} icon`}
+              width={20}
+              height={20}
+              className={styles.navIcon}
+            />
             <span>{item.label}</span>
           </Link>
         );

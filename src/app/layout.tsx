@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description: "Discover and create pub walking routes across beautiful British countryside",
   },
   icons: {
-    icon: '/favicon.svg',
+    icon: '/favicon.ico',
   },
   robots: {
     index: true,

@@ -1,4 +1,6 @@
 // Global type definitions
+import { StaticImageData } from 'next/image';
+
 export interface Route {
   id: string;
   name: string;
@@ -33,7 +35,7 @@ export interface Pub {
 export interface NavItem {
   path: string;
   label: string;
-  icon: string;
+  icon: StaticImageData;
 }
 
 export interface CreateRouteFormData {
