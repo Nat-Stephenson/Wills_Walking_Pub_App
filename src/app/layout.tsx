@@ -56,10 +56,10 @@ export default function RootLayout({
               {/* Logo */}
               <Link href="/" className={styles.logo}>
                 <Image
-                  src="/LogoWithName.png"
+                  src="/WithoutName.png"
                   alt="Will's Walks"
-                  width={160}
-                  height={40}
+                  width={200}
+                  height={50}
                   priority
                   className={styles.navbarLogo}
                 />

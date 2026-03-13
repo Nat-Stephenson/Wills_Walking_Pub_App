@@ -48,16 +48,16 @@
 
 .navbarLogo {
   height: auto;
-  max-height: 40px;
+  max-height: 50px;
   width: auto;
-  max-width: 160px;
+  max-width: 200px;
 }
 
 /* Responsive navbar logo */
 @media (max-width: 768px) {
   .navbarLogo {
-    max-width: 120px;
-    max-height: 30px;
+    max-width: 150px;
+    max-height: 38px;
   }
   
   .headerContent {
