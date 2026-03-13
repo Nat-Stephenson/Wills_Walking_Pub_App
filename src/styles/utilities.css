@@ -5,6 +5,19 @@
   padding: 0 1rem;
 }
 
+/* Responsive container padding */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

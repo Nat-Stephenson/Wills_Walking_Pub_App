@@ -2,8 +2,68 @@
 
 /* Map page responsive split view */
 .split-view {
+  /* Mobile phones - 640px and below */
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    min-height: 40vh !important;
+  }
+  
+  /* Tablets - 768px and below */
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+    min-height: 50vh !important;
+  }
+  
+  /* Small desktops and large tablets - 1024px and below */
   @media (max-width: 1024px) {
     grid-template-columns: 1fr !important;
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  .card {
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Adjust control layouts for mobile */
+  .map-controls {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Make dropdowns full width on mobile */
+  .map-controls select {
+    min-width: 100% !important;
+  }
+  
+  /* Route grid responsive */
+  .route-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  
+  /* Route card mobile adjustments */
+  .route-card {
+    padding: 1rem !important;
+  }
+  
+  /* Route details grid on mobile */
+  .route-details-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Map container mobile adjustments */
+  .map-container {
+    height: 40vh !important;
   }
 }
 

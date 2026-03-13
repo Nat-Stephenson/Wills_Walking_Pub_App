@@ -131,7 +131,7 @@ export default function MapView() {
               Interactive Map
             </h3>
           </div>
-          <div style={{ height: '50vh' }}>
+          <div style={{ height: '50vh' }} className="map-container">
             <Map 
               routes={showRoutesOnMap ? sortedAndFilteredRoutes : []}
               showCompletedOnly={showCompletedOnlyOnMap}
@@ -159,7 +159,9 @@ export default function MapView() {
             flexDirection: 'column',
             gap: '0.75rem',
             fontSize: '0.875rem'
-          }}>
+          }}
+          className="map-controls"
+          >
             {/* Show routes toggle */}
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
               <input
@@ -394,7 +396,9 @@ export default function MapView() {
             flexWrap: 'wrap',
             gap: '1rem',
             alignItems: 'center'
-          }}>
+          }}
+          className="map-controls"
+          >
             {/* Region filter */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <label style={{ fontSize: '0.875rem', fontWeight: '500', whiteSpace: 'nowrap' }}>Region:</label>
@@ -506,7 +510,9 @@ export default function MapView() {
               ? 'repeat(auto-fit, minmax(350px, 1fr))' 
               : '1fr',
             gap: '1.5rem'
-          }}>
+          }}
+          className="route-grid"
+          >
             {sortedAndFilteredRoutes.map(route => (
               <div 
                 key={route.id}
@@ -519,6 +525,7 @@ export default function MapView() {
                   transition: 'all 0.2s ease',
                   cursor: 'pointer'
                 }}
+                className="route-card"
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#92400e';
                   e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
@@ -590,7 +597,9 @@ export default function MapView() {
                   fontSize: '0.875rem',
                   color: '#475569',
                   marginBottom: '1rem'
-                }}>
+                }}
+                className="route-details-grid"
+                >
                   <div><strong>📍 Region:</strong> {route.region}</div>
                   <div><strong>🚶 Distance:</strong> {route.distance} km</div>
                   <div><strong>⏱️ Duration:</strong> {route.duration}h</div>
