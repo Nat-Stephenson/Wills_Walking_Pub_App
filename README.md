@@ -2,10 +2,6 @@
 
 A simple Next.js application for discovering and creating pub walking routes across the UK countryside.
 
-## 🚀 Updated Structure
-
-*In Progress* The app is being streamlined to follow Next.js 15 best practices:
-
 ### 📁 Directory Structure
 ```
 src/
