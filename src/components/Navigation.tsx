@@ -35,8 +35,8 @@ export default function Navigation() {
             <Image
               src={item.icon}
               alt={`${item.label} icon`}
-              width={20}
-              height={20}
+              width={30}
+              height={30}
               className={styles.navIcon}
             />
             <span>{item.label}</span>

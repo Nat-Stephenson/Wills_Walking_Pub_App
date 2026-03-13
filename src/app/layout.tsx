@@ -54,7 +54,7 @@ export default function RootLayout({
             <div className={styles.headerContent}>
               {/* Logo */}
               <Link href="/" className={styles.logo}>
-                🥾 Will's Walks
+                Will's Walks
               </Link>
                 
               {/* Navigation */}
