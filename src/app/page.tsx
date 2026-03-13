@@ -73,7 +73,6 @@ export default function Home() {
 
       {/* Filter */}
       <div className={styles.filterContainer}>
-        <span>🔽</span>
         {regions.map(region => (
           <button
             key={region}
