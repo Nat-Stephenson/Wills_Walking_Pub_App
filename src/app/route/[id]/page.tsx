@@ -2,6 +2,7 @@
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function RouteDetails() {
   const params = useParams();
@@ -72,16 +73,17 @@ export default function RouteDetails() {
       <div className="card" style={{ marginBottom: '2rem' }}>
         <div style={{
           height: '300px',
-          background: 'linear-gradient(135deg, #16a34a, #22c55e)',
+          position: 'relative',
           borderRadius: '0.75rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '4rem',
-          color: 'white',
+          overflow: 'hidden',
           marginBottom: '1.5rem'
         }}>
-          🏞️
+          <Image
+            src="/WithoutName.png"
+            alt={mockRoute.name}
+            fill
+            style={{ objectFit: 'cover' }}
+          />
         </div>
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>

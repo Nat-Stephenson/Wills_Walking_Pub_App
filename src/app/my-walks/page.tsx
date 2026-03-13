@@ -1,3 +1,7 @@
+'use client';
+
+import Image from 'next/image';
+
 export default function MyWalks() {
   // Mock data for demonstration
   const mockCompletedRoutes = [
@@ -107,14 +111,15 @@ export default function MyWalks() {
             }}>
               <div style={{
                 height: '150px',
-                background: 'linear-gradient(135deg, #16a34a, #22c55e)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '2rem',
-                color: 'white'
+                position: 'relative',
+                overflow: 'hidden'
               }}>
-                🏞️
+                <Image
+                  src="/WithoutName.png"
+                  alt={route.name}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
               </div>
               <div style={{ padding: '1rem' }}>
                 <h4 style={{ fontWeight: '600', marginBottom: '0.5rem' }}>

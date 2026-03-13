@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import '@/styles/globals.css';
 import styles from './layout.module.css';
@@ -54,7 +55,14 @@ export default function RootLayout({
             <div className={styles.headerContent}>
               {/* Logo */}
               <Link href="/" className={styles.logo}>
-                Will's Walks
+                <Image
+                  src="/LogoWithName.png"
+                  alt="Will's Walks"
+                  width={160}
+                  height={40}
+                  priority
+                  className={styles.navbarLogo}
+                />
               </Link>
                 
               {/* Navigation */}

@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { routes, getRoutesByRegion, searchRoutes } from '@/data/mockData';
 import { formatDistance, formatDuration } from '@/utils';
 import type { Route } from '@/types';
@@ -41,7 +42,17 @@ export default function Home() {
 
   return (
     <div className={styles.home}>
-      <div>
+      <div className={styles.heroSection}>
+        <div className={styles.logoContainer}>
+          <Image
+            src="/LogoWithName.png"
+            alt="Will's Walks"
+            width={300}
+            height={75}
+            priority
+            className={styles.mainLogo}
+          />
+        </div>
         <h2 className={styles.title}>Discover Walking Routes</h2>
         <p className={styles.subtitle}>Explore curated walks and pub routes across the UK</p>
       </div>
@@ -83,7 +94,12 @@ export default function Home() {
             <Link key={route.id} href={`/route/${route.id}`}>
               <div className={styles.routeCard}>
                 <div className={styles.routeImage}>
-                  🏞️
+                  <Image
+                    src="/WithoutName.png"
+                    alt={route.name}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
                 </div>
                 <div className={styles.routeContent}>
                   <h3 className={styles.routeName}>{route.name}</h3>
