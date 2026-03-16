@@ -12,6 +12,13 @@ export const routes: Route[] = [
     region: 'Cotswolds',
     imageUrl: undefined,
     isCompleted: false,
+    historicalFacts: [
+      'Chipping Campden was once one of the wealthiest wool trading towns in England during the 14th century',
+      'The route passes St. James\' Church, which houses the only remaining medieval altar hanging in England',
+      'Broadway Tower was built in 1798 as a folly and is said to be inspired by the legend of Lady Coventry',
+      'The ancient Ridgeway path you walk on has been in use for over 5,000 years',
+      'Look out for the mysterious "Dover\'s Hill" - site of the historic Cotswold Olimpick Games since 1612'
+    ],
     startPoint: {
       name: 'Chipping Campden',
       lat: 52.0415,
@@ -42,6 +49,14 @@ export const routes: Route[] = [
     region: 'Peak District',
     imageUrl: undefined,
     isCompleted: true,
+    historicalFacts: [
+      'This route follows part of the historic Pennine Way, Britain\'s first National Trail opened in 1965',
+      'Edale was the site of the famous 1932 Mass Trespass that led to the creation of National Parks',
+      'The moorland is home to the legend of the "Barghest" - a monstrous black dog said to roam these hills',
+      'Ancient stone circles and burial mounds dot the landscape, some dating back 4,000 years',
+      'The route passes near Kinder Scout, where the "Right to Roam" movement began',
+      'Look for the remains of medieval settlements abandoned during the Black Death'
+    ],
     startPoint: {
       name: 'Edale',
       lat: 53.3667,
@@ -72,6 +87,14 @@ export const routes: Route[] = [
     region: 'Lake District',
     imageUrl: undefined,
     isCompleted: false,
+    historicalFacts: [
+      'Grasmere was home to William Wordsworth from 1799-1808, inspiring much of his famous poetry',
+      'The village church contains Wordsworth\'s grave, marked by a simple headstone of local slate',
+      'Ancient Celtic legends speak of water spirits dwelling in these lakes',
+      'The route passes Dove Cottage, where Wordsworth wrote "I Wandered Lonely as a Cloud"',
+      'The area inspired the creation of the National Trust in 1895 by Beatrix Potter and others',
+      'Look for the traditional Lakeland dry stone walls built without mortar, some over 400 years old'
+    ],
     startPoint: {
       name: 'Grasmere',
       lat: 54.4594,

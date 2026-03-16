@@ -13,6 +13,7 @@ export default function CreateRoute() {
     duration: '',
     difficulty: 'Moderate',
     region: '',
+    historicalFacts: [],
   });
 
   const [pubs, setPubs] = useState<Array<{
@@ -28,6 +29,8 @@ export default function CreateRoute() {
     latitude: '',
     longitude: '',
   });
+
+  const [currentHistoricalFact, setCurrentHistoricalFact] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -66,6 +69,23 @@ export default function CreateRoute() {
 
   const removePub = (index: number) => {
     setPubs(pubs.filter((_, i) => i !== index));
+  };
+
+  const addHistoricalFact = () => {
+    if (currentHistoricalFact.trim()) {
+      setFormData({
+        ...formData,
+        historicalFacts: [...(formData.historicalFacts || []), currentHistoricalFact.trim()],
+      });
+      setCurrentHistoricalFact('');
+    }
+  };
+
+  const removeHistoricalFact = (index: number) => {
+    setFormData({
+      ...formData,
+      historicalFacts: (formData.historicalFacts || []).filter((_, i) => i !== index),
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -160,6 +180,44 @@ export default function CreateRoute() {
               placeholder="Describe the route..."
             />
           </div>
+        </div>
+
+        <div className="card">
+          <h3 className={styles.sectionTitle}>📜 Historical Facts & Points of Interest</h3>
+          <p style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '1rem' }}>
+            Add interesting historical facts, legends, myths, or notable sights along the route.
+          </p>
+          
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Add Historical Fact</label>
+            <textarea
+              value={currentHistoricalFact}
+              onChange={(e) => setCurrentHistoricalFact(e.target.value)}
+              rows={3}
+              className="input-field"
+              placeholder="e.g., This route passes through the village where the legend of the Barghest originated..."
+            />
+          </div>
+          
+          <button type="button" onClick={addHistoricalFact} className={styles.addButton}>
+            ➕ Add Historical Fact
+          </button>
+
+          {formData.historicalFacts && formData.historicalFacts.length > 0 && (
+            <div className={styles.pubList}>
+              <h4>Added Historical Facts ({formData.historicalFacts.length}):</h4>
+              {formData.historicalFacts.map((fact, index) => (
+                <div key={index} className={styles.pubItem}>
+                  <div>
+                    <p style={{ margin: 0, lineHeight: '1.5' }}>{fact}</p>
+                  </div>
+                  <button type="button" onClick={() => removeHistoricalFact(index)} className={styles.removeButton}>
+                    ❌
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="card">

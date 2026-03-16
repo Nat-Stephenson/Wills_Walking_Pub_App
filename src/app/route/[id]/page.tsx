@@ -3,42 +3,27 @@ import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
+import { getRouteById } from '@/data/mockData';
 
 export default function RouteDetails() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
   
-  // Mock route data - in a real app, this would come from an API or database
-  const mockRoute = {
-    id: id,
-    name: 'Cotswolds Village Walk',
-    description: 'A scenic walk through charming Cotswold villages with traditional stone cottages and rolling hills.',
-    distance: 8.5,
-    duration: 180,
-    difficulty: 'Moderate' as const,
-    region: 'Cotswolds',
-    startPoint: { name: 'Chipping Campden', lat: 52.0418, lng: -1.7814 },
-    endPoint: { name: 'Broadway', lat: 52.0336, lng: -1.8611 },
-    pubs: [
-      {
-        id: 'p1',
-        name: 'The Kings Head Inn',
-        description: 'Historic 16th-century coaching inn',
-        latitude: 52.0380,
-        longitude: -1.7900
-      },
-      {
-        id: 'p2',
-        name: 'The Crown and Trumpet',
-        description: 'Traditional village pub with local ales',
-        latitude: 52.0350,
-        longitude: -1.8500
-      }
-    ]
-  };
+  // Get the actual route data
+  const route = getRouteById(id);
+  
+  // If route not found, show error
+  if (!route) {
+    return (
+      <div className="container">
+        <h1>Route not found</h1>
+        <button onClick={() => router.back()}>← Back to routes</button>
+      </div>
+    );
+  }
 
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(route.isCompleted);
 
   const difficultyColors = {
     'Easy': { background: '#dcfce7', color: '#15803d' },
@@ -80,7 +65,7 @@ export default function RouteDetails() {
         }}>
           <Image
             src="/WithoutName.png"
-            alt={mockRoute.name}
+            alt={route.name}
             fill
             style={{ objectFit: 'cover' }}
           />
@@ -89,10 +74,10 @@ export default function RouteDetails() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>
           <div>
             <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-              {mockRoute.name}
+              {route.name}
             </h1>
             <p style={{ color: '#64748b', fontSize: '1.125rem', lineHeight: '1.6' }}>
-              {mockRoute.description}
+              {route.description}
             </p>
           </div>
           
@@ -102,10 +87,10 @@ export default function RouteDetails() {
               borderRadius: '9999px',
               fontSize: '0.875rem',
               fontWeight: '500',
-              ...difficultyColors[mockRoute.difficulty]
+              ...difficultyColors[route.difficulty]
             }}
           >
-            {mockRoute.difficulty}
+            {route.difficulty}
           </span>
         </div>
 
@@ -119,7 +104,7 @@ export default function RouteDetails() {
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>📏</div>
             <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#92400e' }}>
-              {mockRoute.distance} km
+              {route.distance} km
             </div>
             <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Distance</div>
           </div>
@@ -127,7 +112,7 @@ export default function RouteDetails() {
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>⏱️</div>
             <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#92400e' }}>
-              {Math.floor(mockRoute.duration / 60)}h {mockRoute.duration % 60}m
+              {Math.floor(route.duration)}h {Math.round((route.duration % 1) * 60)}m
             </div>
             <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Duration</div>
           </div>
@@ -135,7 +120,7 @@ export default function RouteDetails() {
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>📈</div>
             <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#92400e' }}>
-              {mockRoute.difficulty}
+              {route.difficulty}
             </div>
             <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Difficulty</div>
           </div>
@@ -143,7 +128,7 @@ export default function RouteDetails() {
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>🍺</div>
             <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#92400e' }}>
-              {mockRoute.pubs.length}
+              {route.pubs.length}
             </div>
             <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Pubs</div>
           </div>
@@ -190,9 +175,9 @@ export default function RouteDetails() {
               🏁
             </div>
             <div>
-              <div style={{ fontWeight: '600' }}>Start: {mockRoute.startPoint.name}</div>
+              <div style={{ fontWeight: '600' }}>Start: {route.startPoint.name}</div>
               <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
-                {mockRoute.startPoint.lat}, {mockRoute.startPoint.lng}
+                {route.startPoint.lat}, {route.startPoint.lng}
               </div>
             </div>
           </div>
@@ -212,15 +197,49 @@ export default function RouteDetails() {
               🎯
             </div>
             <div>
-              <div style={{ fontWeight: '600' }}>End: {mockRoute.endPoint.name}</div>
+              <div style={{ fontWeight: '600' }}>End: {route.endPoint.name}</div>
               <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
-                {mockRoute.endPoint.lat}, {mockRoute.endPoint.lng}
+                {route.endPoint.lat}, {route.endPoint.lng}
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Historical Facts & Interesting Information */}
+      {route.historicalFacts && route.historicalFacts.length > 0 && (
+        <div className="card" style={{ marginBottom: '2rem' }}>
+          <h2 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: '600', 
+            marginBottom: '1rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            📜 Historical Facts & Points of Interest
+          </h2>
+          
+          <div style={{ display: 'grid', gap: '0.75rem' }}>
+            {route.historicalFacts.map((fact, index) => (
+              <div 
+                key={index}
+                style={{
+                  padding: '1rem',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '0.5rem',
+                  background: '#f8fafc',
+                  borderLeft: '4px solid #92400e'
+                }}
+              >
+                <p style={{ margin: 0, color: '#374151', lineHeight: '1.6' }}>
+                  {fact}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       {/* Pubs Along Route */}
       <div className="card">
         <h2 style={{ 
@@ -231,11 +250,11 @@ export default function RouteDetails() {
           alignItems: 'center',
           gap: '0.5rem'
         }}>
-          🍺 Pubs Along the Route ({mockRoute.pubs.length})
+          🍺 Pubs Along the Route ({route.pubs.length})
         </h2>
         
         <div style={{ display: 'grid', gap: '1rem' }}>
-          {mockRoute.pubs.map(pub => (
+          {route.pubs.map(pub => (
             <div 
               key={pub.id} 
               style={{

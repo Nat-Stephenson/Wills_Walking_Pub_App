@@ -12,6 +12,7 @@ export interface Route {
   imageUrl?: string;
   isCompleted: boolean;
   pubs: Pub[];
+  historicalFacts?: string[];
   startPoint: {
     name: string;
     lat: number;
@@ -45,6 +46,7 @@ export interface CreateRouteFormData {
   duration: string;
   difficulty: 'Easy' | 'Moderate' | 'Challenging';
   region: string;
+  historicalFacts?: string[];
 }
 
 export interface PubFormData {
