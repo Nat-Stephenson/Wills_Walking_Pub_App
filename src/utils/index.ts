@@ -93,7 +93,7 @@ export const formatCoordinates = (lat: number, lng: number): string => {
 };
 
 /**
- * Calculate straight-line distance between two points (in km)
+ * Calculate straight-line distance between two points (in miles)
  */
 export const calculateDistance = (
   lat1: number, 
@@ -101,7 +101,7 @@ export const calculateDistance = (
   lat2: number, 
   lng2: number
 ): number => {
-  const R = 6371; // Earth's radius in km
+  const R = 3959; // Earth's radius in miles
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLng = (lng2 - lng1) * Math.PI / 180;
   const a = 

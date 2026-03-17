@@ -104,7 +104,7 @@ export default function RouteDetails() {
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>📏</div>
             <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#92400e' }}>
-              {route.distance} km
+              {route.distance} miles
             </div>
             <div style={{ fontSize: '0.875rem', color: '#64748b' }}>Distance</div>
           </div>

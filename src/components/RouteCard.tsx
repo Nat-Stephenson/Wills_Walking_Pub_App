@@ -49,7 +49,7 @@ export function RouteCard({ route }: RouteCardProps) {
         <div className={styles.routeStats}>
           <div className={styles.statGroup}>
             <span className={styles.stat}>
-              📏 {route.distance}km
+              � {route.distance} miles
             </span>
             <span className={styles.stat}>
               ⏱️ {Math.floor(route.duration / 60)}h {route.duration % 60}m

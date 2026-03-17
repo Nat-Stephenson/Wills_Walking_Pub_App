@@ -184,7 +184,7 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
               >
                 <Popup>
                   <strong>{route.name}</strong><br/>
-                  {route.distance}km • {route.duration}h • {route.difficulty}<br/>
+                  {route.distance} miles • {route.duration}h • {route.difficulty}<br/>
                   Status: {route.isCompleted ? '✅ Completed' : '⏳ Pending'}
                 </Popup>
               </Polyline>
@@ -194,7 +194,7 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
                 <Popup>
                   <strong>🚩 Start: {route.startPoint.name}</strong><br/>
                   Route: {route.name}<br/>
-                  Distance: {route.distance}km<br/>
+                  Distance: {route.distance} miles<br/>
                   Duration: {route.duration}h<br/>
                   Difficulty: {route.difficulty}
                 </Popup>

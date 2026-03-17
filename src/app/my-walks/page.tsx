@@ -64,7 +64,7 @@ export default function MyWalks() {
             Total Distance
           </div>
           <div style={{ fontSize: '2rem', color: '#92400e', fontWeight: 'bold' }}>
-            {totalDistance.toFixed(1)} km
+            {totalDistance.toFixed(1)} miles
           </div>
         </div>
         <div className="card">
@@ -139,7 +139,7 @@ export default function MyWalks() {
                   color: '#475569',
                   marginBottom: '0.5rem'
                 }}>
-                  <span>📏 {route.distance} km</span>
+                  <span>� {route.distance} miles</span>
                   <span>⏱️ {Math.floor(route.duration / 60)}h</span>  
                   <span>🍺 {route.pubs.length}</span>
                 </div>

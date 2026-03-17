@@ -14,6 +14,17 @@ export default function CreateRoute() {
     difficulty: 'Moderate',
     region: '',
     historicalFacts: [],
+    startPoint: {
+      name: '',
+      latitude: '',
+      longitude: '',
+    },
+    endPoint: {
+      name: '',
+      latitude: '',
+      longitude: '',
+    },
+
   });
 
   const [pubs, setPubs] = useState<Array<{
@@ -37,6 +48,19 @@ export default function CreateRoute() {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleNestedInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const [parent, child] = name.split('.');
+    
+    setFormData(prev => ({
+      ...prev,
+      [parent]: {
+        ...(prev[parent as keyof CreateRouteFormData] as any),
+        [child]: value,
+      },
+    }));
   };
 
   const handlePubInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -89,11 +113,29 @@ export default function CreateRoute() {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Route data:', { ...formData, pubs });
-    alert('Route created successfully!');
-    router.push('/');
+  e.preventDefault();
+  
+  const routeData = {
+    ...formData,
+    distance: parseFloat(formData.distance),
+    duration: parseInt(formData.duration),
+    startPoint: {
+      name: formData.startPoint.name,
+      lat: parseFloat(formData.startPoint.latitude),
+      lng: parseFloat(formData.startPoint.longitude),
+    },
+    endPoint: {
+      name: formData.endPoint.name,
+      lat: parseFloat(formData.endPoint.latitude),
+      lng: parseFloat(formData.endPoint.longitude),
+    },
+    pubs,
   };
+  
+  console.log('Route data:', routeData);
+  alert('Route created successfully!');
+  router.push('/');
+};
 
   return (
     <div className={styles.container}>
@@ -129,7 +171,7 @@ export default function CreateRoute() {
               />
             </div>
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Distance (km) *</label>
+              <label className={styles.label}>Distance (miles) *</label>
               <input
                 type="number"
                 name="distance"
@@ -178,6 +220,89 @@ export default function CreateRoute() {
               required
               className="input-field"
               placeholder="Describe the route..."
+            />
+          </div>
+        </div>
+
+        <div className="card">
+          <h3 className={styles.sectionTitle}>📍 Start & End Points</h3>
+          <p style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '1rem' }}>
+            Specify the starting and ending points of the route.
+          </p>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Start Point Name *</label>
+            <input
+              type="text"
+              name="startPoint.name"
+              value={formData.startPoint.name}
+              onChange={handleNestedInputChange}
+              required
+              className="input-field"
+              placeholder="Enter start point name"
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Start Point Latitude *</label>
+            <input
+              type="number"
+              name="startPoint.latitude"
+              value={formData.startPoint.latitude}
+              onChange={handleNestedInputChange}
+              step="any"
+              required
+              className="input-field"
+              placeholder="Enter start point latitude"
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Start Point Longitude *</label>
+            <input
+              type="number"
+              name="startPoint.longitude"
+              value={formData.startPoint.longitude}
+              onChange={handleNestedInputChange}
+              step="any"
+              required
+              className="input-field"
+              placeholder="Enter start point longitude"
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>End Point Name *</label>
+            <input
+              type="text"
+              name="endPoint.name"
+              value={formData.endPoint.name}
+              onChange={handleNestedInputChange}
+              required
+              className="input-field"
+              placeholder="Enter end point name"
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>End Point Latitude *</label>
+            <input
+              type="number"
+              name="endPoint.latitude"
+              value={formData.endPoint.latitude}
+              onChange={handleNestedInputChange}
+              step="any"
+              required
+              className="input-field"
+              placeholder="Enter end point latitude"
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>End Point Longitude *</label>
+            <input
+              type="number"
+              name="endPoint.longitude"
+              value={formData.endPoint.longitude}
+              onChange={handleNestedInputChange}
+              step="any"
+              required
+              className="input-field"
+              placeholder="Enter end point longitude"
             />
           </div>
         </div>
