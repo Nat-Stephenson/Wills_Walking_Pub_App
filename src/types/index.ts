@@ -47,6 +47,16 @@ export interface CreateRouteFormData {
   difficulty: 'Easy' | 'Moderate' | 'Challenging';
   region: string;
   historicalFacts?: string[];
+  startPoint: {
+    name: string;
+    latitude: string;
+    longitude: string;
+  };
+  endPoint: { 
+    name: string;
+    latitude: string;
+    longitude: string;        
+    };  
 }
 
 export interface PubFormData {
