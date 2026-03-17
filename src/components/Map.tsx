@@ -1,4 +1,4 @@
-"use client"; // Needed for Next.js App Router to run in browser
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
@@ -9,56 +9,20 @@ import type { Route } from '@/types';
 // Import navigation icons
 import PintBeerIcon from '@/assets/PintBeer.png';
 
+// Simple pub icon using the imported image
+const pubIcon = new L.Icon({
+  iconUrl: PintBeerIcon.src,
+  iconSize: [25, 25],
+  iconAnchor: [12, 25],
+  popupAnchor: [0, -25]
+});
+
 // Fix default marker icon issue in Leaflet + Webpack
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
   iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-});
-
-// Custom icons - green for start, red for end, blue for user location, navbar icon for pubs
-const userLocationIcon = new L.Icon({
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-  shadowSize: [41, 41],
-  shadowAnchor: [12, 41]
-});
-
-const startIcon = new L.Icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-  iconRetinaUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-  shadowSize: [41, 41],
-  shadowAnchor: [12, 41]
-});
-
-const endIcon = new L.Icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-  iconRetinaUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-  shadowSize: [41, 41],
-  shadowAnchor: [12, 41]
-});
-
-const pubIcon = new L.Icon({
-  iconUrl: PintBeerIcon.src,
-  iconSize: [28, 28],
-  iconAnchor: [14, 28],
-  popupAnchor: [0, -28],
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-  shadowSize: [41, 41],
-  shadowAnchor: [12, 41]
 });
 
 interface Position {
@@ -104,25 +68,19 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
 
   // Get GPS location
   useEffect(() => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser.");
-      return;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setPosition({
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+          });
+        },
+        (err) => {
+          setError(err.message);
+        }
+      );
     }
-
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => {
-        setPosition({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        });
-      },
-      (err) => {
-        setError(err.message);
-      },
-      { enableHighAccuracy: true }
-    );
-
-    return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
   const mapCenter = getMapCenter();
@@ -130,13 +88,10 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
-      {error && <p style={{ color: "red", margin: "0.5rem" }}>Location error: {error}</p>}
-      {mapError && <p style={{ color: "red", margin: "0.5rem" }}>Map error: {mapError}</p>}
-      
       <MapContainer
         center={mapCenter}
         zoom={zoomLevel}
-        style={{ height: error ? "calc(100% - 2rem)" : "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
@@ -145,7 +100,7 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
         
         {/* Show user position if available */}
         {position && (
-          <Marker position={position} icon={userLocationIcon}>
+          <Marker position={position}>
             <Popup>
               <strong>📍 You are here</strong><br/>
               Current location
@@ -182,7 +137,7 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
               </Polyline>
               
               {/* Start marker */}
-              <Marker position={[route.startPoint.lat, route.startPoint.lng]} icon={startIcon}>
+              <Marker position={[route.startPoint.lat, route.startPoint.lng]}>
                 <Popup>
                   <strong>🚩 Start: {route.startPoint.name}</strong><br/>
                   Route: {route.name}<br/>
@@ -193,7 +148,7 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
               </Marker>
               
               {/* End marker */}
-              <Marker position={[route.endPoint.lat, route.endPoint.lng]} icon={endIcon}>
+              <Marker position={[route.endPoint.lat, route.endPoint.lng]}>
                 <Popup>
                   <strong>🏁 End: {route.endPoint.name}</strong><br/>
                   Route: {route.name}<br/>
@@ -235,30 +190,42 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
           zIndex: 1000
         }}>
           <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Legend</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
-            <div style={{ width: '12px', height: '19px', backgroundColor: '#007bff', borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }}></div>
-            <span>You are here</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
-            <div style={{ width: '12px', height: '19px', backgroundColor: '#28a745', borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }}></div>
-            <span>Start Points</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
-            <div style={{ width: '12px', height: '19px', backgroundColor: '#dc3545', borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }}></div>
-            <span>End Points</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
-            <img src={PintBeerIcon.src} alt="Pub" style={{ width: '16px', height: '16px' }} />
-            <span>Pubs</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
-            <div style={{ width: '20px', height: '3px', backgroundColor: '#22c55e' }}></div>
-            <span>Completed</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            <div style={{ width: '20px', height: '3px', backgroundColor: '#94a3b8', backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 5px, white 5px, white 10px)' }}></div>
-            <span>Pending</span>
-          </div>
+          {position && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
+              <img src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png" alt="Location" style={{ width: '12px', height: '19px' }} />
+              <span>Your Location</span>
+            </div>
+          )}
+          {displayRoutes.length > 0 && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png" alt="Start" style={{ width: '12px', height: '19px' }} />
+                <span>Start Points</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
+                <img src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png" alt="End" style={{ width: '12px', height: '19px' }} />
+                <span>End Points</span>
+              </div>
+            </>
+          )}
+          {displayRoutes.some(route => route.pubs.length > 0) && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
+              <img src={PintBeerIcon.src} alt="Pub" style={{ width: '16px', height: '16px' }} />
+              <span>Pubs</span>
+            </div>
+          )}
+          {displayRoutes.length > 0 && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
+                <div style={{ width: '20px', height: '3px', backgroundColor: '#22c55e' }}></div>
+                <span>Completed</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <div style={{ width: '20px', height: '3px', backgroundColor: '#94a3b8', backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 5px, white 5px, white 10px)' }}></div>
+                <span>Pending</span>
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>
