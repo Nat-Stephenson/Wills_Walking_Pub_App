@@ -46,7 +46,7 @@ export default function Home() {
         <div className={styles.logoContainer}>
           <Image
             src="/LogoWithName.png"
-            alt="Will's Walks"
+            alt="Will's Walks Main Logo"
             width={300}
             height={75}
             priority
@@ -54,7 +54,7 @@ export default function Home() {
           />
         </div>
         <h2 className={styles.title}>Discover Walking Routes</h2>
-        <p className={styles.subtitle}>Explore curated walks and pub routes across the UK</p>
+        <p className={styles.subtitle}>Wills Walks is a personalised walking app made for Will, with an easy way to share favourite routes with friends. Save the walks you love, keep the details that matter (distance, time, terrain, where to start), and build a little library of go to wander ideas for weekends and after work.</p>
       </div>
 
       {/* Search */}
