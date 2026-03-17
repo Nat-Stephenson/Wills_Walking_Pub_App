@@ -7,27 +7,22 @@ import styles from './layout.module.css';
 
 export const metadata: Metadata = {
   title: {
-    default: "Will's Walks - Your hiking companion",
+    default: "Will's Walks - Your Next Pub Walk Adventure",
     template: "%s | Will's Walks"
   },
-  description: "Discover and create pub walking routes across beautiful British countryside",
+  description: "Explore a growing collection of UK routes centred around a good pub, inspired by National Trust pub walks and expanded over time with new favourites. Each route includes the essentials at a glance: distance, estimated time, start point, and simple notes to help you plan.",
   keywords: ['walking', 'hiking', 'pubs', 'routes', 'countryside', 'UK'],
-  authors: [{ name: "Will's Walks" }],
-  creator: "Will's Walks",
+  authors: [{ name: "Nat Stephenson" }],
+  creator: "Nat Stephenson",
   publisher: "Will's Walks",
-  metadataBase: new URL('https://willswalks.com'),
+  metadataBase: new URL('https://willswalks.netlify.app/'),
   openGraph: {
     type: 'website',
     locale: 'en_GB',
-    url: 'https://willswalks.com',
+    url: 'https://willswalks.netlify.app/',
     siteName: "Will's Walks",
-    title: "Will's Walks - Your hiking companion",
-    description: "Discover and create pub walking routes across beautiful British countryside",
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: "Will's Walks - Your hiking companion",
-    description: "Discover and create pub walking routes across beautiful British countryside",
+    title: "Will's Walks - Your Next Pub Walk Adventure",
+    description: "Explore a growing collection of UK routes centred around a good pub, inspired by National Trust pub walks and expanded over time with new favourites. Each route includes the essentials at a glance: distance, estimated time, start point, and simple notes to help you plan.",
   },
   icons: {
     icon: '/favicon.ico',
