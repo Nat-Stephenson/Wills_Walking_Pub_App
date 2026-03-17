@@ -139,7 +139,7 @@ export default function MyWalks() {
                   color: '#475569',
                   marginBottom: '0.5rem'
                 }}>
-                  <span>� {route.distance} miles</span>
+                  <span>📏 {route.distance} miles</span>
                   <span>⏱️ {Math.floor(route.duration / 60)}h</span>  
                   <span>🍺 {route.pubs.length}</span>
                 </div>
