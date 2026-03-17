@@ -310,7 +310,7 @@ export default function MapView() {
                   gap: '0.75rem'
                 }}>
                   <span>📍 {route.region}</span>
-                  <span>� {route.distance} miles</span>
+                  <span>📏 {route.distance} miles</span>
                   <span>⏱️ {route.duration}h</span>
                 </div>
               </div>

@@ -105,7 +105,7 @@ export default function Home() {
                   <p className={styles.routeDescription}>{route.description}</p>
                   <div className={styles.routeStats}>
                     <span className={styles.routeStat}>
-                      � {formatDistance(route.distance)}
+                      📏 {formatDistance(route.distance)}
                     </span>
                     <span className={styles.routeStat}>
                       ⏱️ {formatDuration(route.duration)}
