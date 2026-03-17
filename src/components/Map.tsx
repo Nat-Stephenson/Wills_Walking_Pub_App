@@ -17,7 +17,18 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
-// Custom icons - green for start, red for end, default blue for user location, navbar icon for pubs
+// Custom icons - green for start, red for end, blue for user location, navbar icon for pubs
+const userLocationIcon = new L.Icon({
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  shadowSize: [41, 41],
+  shadowAnchor: [12, 41]
+});
+
 const startIcon = new L.Icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
   iconRetinaUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
@@ -153,7 +164,7 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
         
         {/* Show user position if available */}
         {position && (
-          <Marker position={position}>
+          <Marker position={position} icon={userLocationIcon}>
             <Popup>
               <strong>📍 You are here</strong><br/>
               Current location
