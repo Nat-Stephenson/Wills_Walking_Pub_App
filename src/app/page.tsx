@@ -53,8 +53,8 @@ export default function Home() {
             className={styles.mainLogo}
           />
         </div>
-        <h2 className={styles.title}>Discover Walking Routes</h2>
-        <p className={styles.subtitle}>Wills Walks is a personalised walking app made for Will, with an easy way to share favourite routes with friends. Save the walks you love, keep the details that matter (distance, time, terrain, where to start), and build a little library of go to wander ideas for weekends and after work.</p>
+        <h2 className={styles.title}>Discover, Pint, Enjoy</h2>
+        <p className={styles.subtitle}> This is Will’s personal library of pub walks, made simple to share. Save routes, read interesting notes, and pick your next adventure.</p>
       </div>
 
       {/* Search */}
