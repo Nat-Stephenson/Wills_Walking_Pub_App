@@ -133,30 +133,11 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
       {error && <p style={{ color: "red", margin: "0.5rem" }}>Location error: {error}</p>}
       {mapError && <p style={{ color: "red", margin: "0.5rem" }}>Map error: {mapError}</p>}
       
-      {/* Show loading message if no routes */}
-      {displayRoutes.length === 0 && !mapError && (
-        <div style={{ 
-          padding: '2rem', 
-          textAlign: 'center', 
-          color: '#64748b',
-          backgroundColor: '#f8fafc',
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column'
-        }}>
-          <h3 style={{ margin: '0 0 0.5rem 0' }}>🗺️ No Routes to Display</h3>
-          <p style={{ margin: 0 }}>Enable route display or adjust filters to see routes on the map</p>
-        </div>
-      )}
-      
-      {displayRoutes.length > 0 && (
-        <MapContainer
-          center={mapCenter}
-          zoom={zoomLevel}
-          style={{ height: error ? "calc(100% - 2rem)" : "100%", width: "100%" }}
-        >
+      <MapContainer
+        center={mapCenter}
+        zoom={zoomLevel}
+        style={{ height: error ? "calc(100% - 2rem)" : "100%", width: "100%" }}
+      >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -238,7 +219,6 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
           );
         })}
       </MapContainer>
-      )}
       
       {/* Map Legend - only show if routes are displayed */}
       {displayRoutes.length > 0 && (
@@ -256,11 +236,15 @@ export default function Map({ routes = [], showCompletedOnly = false, selectedRo
         }}>
           <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>Legend</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
-            <div style={{ width: '12px', height: '19px', backgroundColor: '#2563eb', borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }}></div>
+            <div style={{ width: '12px', height: '19px', backgroundColor: '#007bff', borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }}></div>
+            <span>You are here</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
+            <div style={{ width: '12px', height: '19px', backgroundColor: '#28a745', borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }}></div>
             <span>Start Points</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>
-            <div style={{ width: '12px', height: '19px', backgroundColor: '#2563eb', borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }}></div>
+            <div style={{ width: '12px', height: '19px', backgroundColor: '#dc3545', borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }}></div>
             <span>End Points</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', marginBottom: '0.25rem' }}>

@@ -131,7 +131,7 @@ export default function MapView() {
               Interactive Map
             </h3>
           </div>
-          <div style={{ height: '50vh' }} className="map-container">
+          <div style={{ height: '70vh' }} className="map-container">
             <Map 
               routes={showRoutesOnMap ? sortedAndFilteredRoutes : []}
               showCompletedOnly={showCompletedOnlyOnMap}

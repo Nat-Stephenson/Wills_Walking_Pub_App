@@ -1,24 +1,21 @@
 /* Reusable Component Styles */
 
-/* Map page responsive split view */
+/* Map page responsive split view - always single column */
 .split-view {
+  /* Always single column for better map display */
+  grid-template-columns: 1fr !important;
+  gap: 1.5rem !important;
+  
   /* Mobile phones - 640px and below */
   @media (max-width: 640px) {
-    grid-template-columns: 1fr !important;
     gap: 1rem !important;
     min-height: 40vh !important;
   }
   
   /* Tablets - 768px and below */
   @media (max-width: 768px) {
-    grid-template-columns: 1fr !important;
     gap: 1.25rem !important;
     min-height: 50vh !important;
-  }
-  
-  /* Small desktops and large tablets - 1024px and below */
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr !important;
   }
 }
 
