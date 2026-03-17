@@ -3,10 +3,10 @@
 import type { Route } from '@/types';
 
 /**
- * Format distance in kilometers to a readable string
+ * Format distance in miles to a readable string
  */
 export const formatDistance = (distance: number): string => {
-  return `${distance.toFixed(1)} km`;
+  return `${distance.toFixed(1)} miles`;
 };
 
 /**
@@ -45,14 +45,14 @@ export const getDifficultyColor = (difficulty: Route['difficulty']): string => {
  * Calculate estimated calories burned based on distance and difficulty
  */
 export const estimateCalories = (distance: number, difficulty: Route['difficulty']): number => {
-  const baseCaloriesPerKm = 50; // Base calories per km
+  const baseCaloriesPerMile = 80; // Base calories per mile
   const difficultyMultiplier = {
     'Easy': 1.0,
     'Moderate': 1.3,
     'Challenging': 1.6,
   };
   
-  return Math.round(distance * baseCaloriesPerKm * difficultyMultiplier[difficulty]);
+  return Math.round(distance * baseCaloriesPerMile * difficultyMultiplier[difficulty]);
 };
 
 /**
