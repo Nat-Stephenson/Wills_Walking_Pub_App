@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
     "lib": [
       "dom",
       "dom.iterable",
@@ -26,20 +25,9 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/data/*": [
-        "./src/data/*"
-      ],
-      "@/styles/*": [
-        "./src/styles/*"
-      ],
-      "@/types/*": [
-        "./src/types/*"
       ]
     },
+    "target": "ES2017",
     "forceConsistentCasingInFileNames": true
   },
   "include": [
