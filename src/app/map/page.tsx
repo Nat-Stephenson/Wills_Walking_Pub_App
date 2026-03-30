@@ -79,7 +79,7 @@ export default function MapView() {
               duration: route.estimated_time || route.duration || 'Unknown time',
               difficulty: (route.difficulty as 'Easy' | 'Moderate' | 'Challenging') || 'Moderate',
               region: route.region || 'UK',
-              imageUrl: '/placeholder.jpg',
+              imageUrl: route.imageUrl ?? '/placeholder.jpg',
               isCompleted: false,
               historicalFacts: route.historical_fact ? [route.historical_fact] : [],
               start_latitude: parseFloat(route.start_latitude),
