@@ -5,32 +5,29 @@ export interface Route {
   id: string;
   name: string;
   description: string;
-  distance: number;
-  duration: number;
+  distance: string;
+  duration: string;
   difficulty: 'Easy' | 'Moderate' | 'Challenging';
   region: string;
   imageUrl?: string;
   isCompleted: boolean;
-  pubs: Pub[];
   historicalFacts?: string[];
-  startPoint: {
-    name: string;
-    lat: number;
-    lng: number;
-  };
-  endPoint: {
-    name: string;
-    lat: number;
-    lng: number;
-  };
+  // Database coordinate fields
+  start_latitude: number;
+  start_longitude: number;
+  pub_latitude: number;
+  pub_longitude: number;
+  end_latitude: number;
+  end_longitude: number;
+  pub_name: string;
 }
 
 export interface Pub {
   id: string;
   name: string;
-  description: string;
   latitude: number;
   longitude: number;
+  description?: string;
 }
 
 export interface NavItem {
