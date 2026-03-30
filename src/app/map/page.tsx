@@ -1,14 +1,15 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { routes } from '@/data/mockData';
+import { useState, useMemo, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 import type { Route } from '@/types';
+import type { User } from '@supabase/supabase-js';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import MapIcon from '@/assets/Map.png';
 import TrekIcon from '@/assets/Trek.png';
 
-// Dynamically import Map to avoid SSR issues
+// Dynamically import Map with real routing API
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 type SortOption = 'name-asc' | 'name-desc' | 'distance-asc' | 'distance-desc' | 
@@ -16,6 +17,8 @@ type SortOption = 'name-asc' | 'name-desc' | 'distance-asc' | 'distance-desc' |
                   'completed-first' | 'incomplete-first' | 'region-asc';
 
 export default function MapView() {
+  const [routes, setRoutes] = useState<Route[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showAllRoutes, setShowAllRoutes] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('name-asc');
   const [filterRegion, setFilterRegion] = useState<string>('all');
@@ -24,15 +27,96 @@ export default function MapView() {
   const [showCompletedOnlyOnMap, setShowCompletedOnlyOnMap] = useState(false);
   const [selectedRouteOnMap, setSelectedRouteOnMap] = useState<string | null>(null);
 
+  // Load routes from Supabase
+  useEffect(() => {
+    loadRoutesFromSupabase();
+  }, []);
+
+  const loadRoutesFromSupabase = async () => {
+    try {
+      setLoading(true);
+      console.log('Loading routes from Supabase...');
+      
+      const { data: routesData, error } = await supabase
+        .from('walking_routes')
+        .select('*')
+        .order('route_name');
+
+      console.log('Supabase response:', { data: routesData, error });
+
+      if (error) {
+        console.error('Supabase error:', error);
+        alert(`Database error: ${error.message}`);
+        return;
+      }
+
+      if (!routesData || routesData.length === 0) {
+        console.warn('No routes found in database');
+        setRoutes([]);
+        return;
+      }
+
+      console.log(`Found ${routesData.length} routes in database`);
+
+      const transformedRoutes = routesData
+        .filter(route => {
+          const hasCoords = route.start_latitude && route.start_longitude && 
+                           route.pub_latitude && route.pub_longitude && 
+                           route.end_latitude && route.end_longitude;
+          
+          if (!hasCoords) {
+            console.warn('Skipping route with missing coordinates:', route.route_name);
+          }
+          return hasCoords;
+        })
+        .map(route => {
+          try {
+            return {
+              id: route.id?.toString() || Math.random().toString(),
+              name: route.route_name || 'Unnamed Route',
+              description: route.description || route.historical_fact || 'No description available',
+              distance: route.distance || '5 km',
+              duration: route.estimated_time || route.duration || 'Unknown time',
+              difficulty: (route.difficulty as 'Easy' | 'Moderate' | 'Challenging') || 'Moderate',
+              region: route.region || 'UK',
+              imageUrl: '/placeholder.jpg',
+              isCompleted: false,
+              historicalFacts: route.historical_fact ? [route.historical_fact] : [],
+              start_latitude: parseFloat(route.start_latitude),
+              start_longitude: parseFloat(route.start_longitude),
+              pub_latitude: parseFloat(route.pub_latitude),
+              pub_longitude: parseFloat(route.pub_longitude),
+              end_latitude: parseFloat(route.end_latitude),
+              end_longitude: parseFloat(route.end_longitude),
+              pub_name: route.pub_name || 'Unknown Pub'
+            };
+          } catch (transformError) {
+            console.error('Error transforming route:', route.route_name, transformError);
+            return null;
+          }
+        })
+        .filter(route => route !== null);
+
+      console.log(`Successfully transformed ${transformedRoutes.length} routes`);
+      setRoutes(transformedRoutes);
+      
+    } catch (error) {
+      console.error('Fatal error loading routes:', error);
+      alert(`Failed to load routes: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Get unique regions
   const regions = useMemo(() => {
     const uniqueRegions = Array.from(new Set(routes.map(route => route.region)));
     return uniqueRegions.sort();
   }, []);
 
-  // Sort and filter routes
+  // Sort and filter routes - show ALL routes by default
   const sortedAndFilteredRoutes = useMemo(() => {
-    let filteredRoutes = showAllRoutes ? routes : routes.filter(route => route.isCompleted);
+    let filteredRoutes = routes; // Show all routes, not just completed ones
     
     // Apply region filter
     if (filterRegion !== 'all') {
@@ -47,9 +131,13 @@ export default function MapView() {
         case 'name-desc':
           return b.name.localeCompare(a.name);
         case 'distance-asc':
-          return a.distance - b.distance;
+          const aDistance = parseFloat(a.distance) || 0;
+          const bDistance = parseFloat(b.distance) || 0;
+          return aDistance - bDistance;
         case 'distance-desc':
-          return b.distance - a.distance;
+          const aDistanceDesc = parseFloat(a.distance) || 0;
+          const bDistanceDesc = parseFloat(b.distance) || 0;
+          return bDistanceDesc - aDistanceDesc;
         case 'difficulty-asc':
           const difficultyOrder = { 'Easy': 1, 'Moderate': 2, 'Challenging': 3 };
           return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
@@ -57,9 +145,13 @@ export default function MapView() {
           const difficultyOrderDesc = { 'Easy': 3, 'Moderate': 2, 'Challenging': 1 };
           return difficultyOrderDesc[a.difficulty] - difficultyOrderDesc[b.difficulty];
         case 'duration-asc':
-          return a.duration - b.duration;
+          const aDuration = parseFloat(a.duration) || 0;
+          const bDuration = parseFloat(b.duration) || 0;
+          return aDuration - bDuration;
         case 'duration-desc':
-          return b.duration - a.duration;
+          const aDurationDesc = parseFloat(a.duration) || 0;
+          const bDurationDesc = parseFloat(b.duration) || 0;
+          return bDurationDesc - aDurationDesc;
         case 'completed-first':
           return b.isCompleted ? 1 : -1;
         case 'incomplete-first':
@@ -75,11 +167,74 @@ export default function MapView() {
   }, [showAllRoutes, sortBy, filterRegion]);
 
   const completedRoutes = sortedAndFilteredRoutes.filter(route => route.isCompleted);
-  const totalDistance = sortedAndFilteredRoutes.reduce((sum, route) => sum + route.distance, 0);
-  const totalPubs = sortedAndFilteredRoutes.reduce((sum, route) => sum + route.pubs.length, 0);
+  const totalDistance = sortedAndFilteredRoutes.reduce((sum, route) => {
+    const distance = parseFloat(route.distance);
+    return sum + (isNaN(distance) ? 0 : distance);
+  }, 0);
+  const totalPubs = sortedAndFilteredRoutes.length;
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="container" style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '60vh',
+        flexDirection: 'column',
+        gap: '1rem'
+      }}>
+        <div style={{ fontSize: '1.5rem', color: '#6b7280' }}>🗺️</div>
+        <div style={{ fontSize: '1.125rem', color: '#6b7280' }}>Loading walking routes...</div>
+        <div style={{ fontSize: '0.875rem', color: '#9ca3af' }}>Fetching data from database</div>
+        <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Debug: Check browser console for logs</div>
+      </div>
+    );
+  }
+
+  // Empty state
+  if (routes.length === 0) {
+    return (
+      <div className="container" style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        minHeight: '60vh',
+        flexDirection: 'column',
+        gap: '1rem'
+      }}>
+        <div style={{ fontSize: '2rem' }}>🚫</div>
+        <div style={{ fontSize: '1.25rem', fontWeight: '600', color: '#374151' }}>No routes found</div>
+        <div style={{ fontSize: '0.875rem', color: '#6b7280', textAlign: 'center' }}>
+          No walking routes were found in the database.<br />
+          Check your database connection and ensure routes exist in the walking_routes table.
+        </div>
+        <button 
+          onClick={loadRoutesFromSupabase}
+          style={{
+            padding: '0.5rem 1rem',
+            backgroundColor: '#3b82f6',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0.375rem',
+            cursor: 'pointer'
+          }}
+        >
+          🔄 Retry Loading Routes
+        </button>
+      </div>
+    );
+  }
+
+  // Add debug info
+  console.log('Map page rendering with:', {
+    routesCount: routes.length,
+    filteredCount: sortedAndFilteredRoutes.length,
+    sampleRoute: routes[0]
+  });
 
   return (
-    <div className="container">
+    <div>
       <div style={{ marginBottom: '1.5rem' }}>
         <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
           Will's UK Walking Routes
@@ -134,7 +289,6 @@ export default function MapView() {
           <div style={{ height: '70vh' }} className="map-container">
             <Map 
               routes={showRoutesOnMap ? sortedAndFilteredRoutes : []}
-              showCompletedOnly={showCompletedOnlyOnMap}
               selectedRoute={selectedRouteOnMap}
             />
           </div>
@@ -613,31 +767,29 @@ export default function MapView() {
                   color: '#64748b'
                 }}>
                   <div style={{ marginBottom: '0.25rem' }}>
-                    <strong style={{ color: '#475569' }}>🚩 Start:</strong> {route.startPoint.name}
+                    <strong style={{ color: '#475569' }}>🚩 Start:</strong> {route.start_latitude.toFixed(4)}, {route.start_longitude.toFixed(4)}
                   </div>
                   <div>
-                    <strong style={{ color: '#475569' }}>🏁 End:</strong> {route.endPoint.name}
+                    <strong style={{ color: '#475569' }}>🏁 End:</strong> {route.end_latitude.toFixed(4)}, {route.end_longitude.toFixed(4)}
                   </div>
                 </div>
                 
                 {/* Pubs */}
-                {route.pubs.length > 0 && (
+                {route.pub_name && (
                   <div style={{ 
                     padding: '0.75rem',
                     backgroundColor: '#f8fafc',
                     borderRadius: '0.5rem',
                     fontSize: '0.875rem'
                   }}>
-                    <strong style={{ color: '#475569' }}>🍺 Pubs on Route:</strong>
+                    <strong style={{ color: '#475569' }}>🍺 Pub on Route:</strong>
                     <div style={{ marginTop: '0.5rem' }}>
-                      {route.pubs.map(pub => (
-                        <div key={pub.id} style={{ 
-                          color: '#64748b',
-                          marginBottom: '0.25rem'
-                        }}>
-                          • <strong>{pub.name}</strong> - {pub.description}
-                        </div>
-                      ))}
+                      <div style={{ 
+                        color: '#64748b',
+                        marginBottom: '0.25rem'
+                      }}>
+                        • <strong>{route.pub_name}</strong>
+                      </div>
                     </div>
                   </div>
                 )}
