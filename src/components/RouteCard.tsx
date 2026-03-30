@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Route } from '@/types';
-import { formatDistance, formatDuration, getDifficultyColor } from '@/utils';
 import styles from './RouteCard.module.css';
 
 interface RouteCardProps {
@@ -49,14 +48,14 @@ export function RouteCard({ route }: RouteCardProps) {
         <div className={styles.routeStats}>
           <div className={styles.statGroup}>
             <span className={styles.stat}>
-              📏 {route.distance} miles
+              📏 {route.distance}
             </span>
             <span className={styles.stat}>
-              ⏱️ {Math.floor(route.duration / 60)}h {route.duration % 60}m
+              ⏱️ {route.duration}
             </span>
           </div>
           <div className={styles.pubStat}>
-            🍺 {route.pubs.length}
+            🍺 1
           </div>
         </div>
         
