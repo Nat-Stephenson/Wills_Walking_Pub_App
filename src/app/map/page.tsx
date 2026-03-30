@@ -95,7 +95,7 @@ export default function MapView() {
             return null;
           }
         })
-        .filter(route => route !== null);
+        .filter((route): route is Route => route !== null);
 
       console.log(`Successfully transformed ${transformedRoutes.length} routes`);
       setRoutes(transformedRoutes);
